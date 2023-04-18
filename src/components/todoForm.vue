@@ -1,9 +1,9 @@
 <template>
   <div
-    class="bg-white flex flex-wrap text-left lg:text-left ml-8 gap-8 sm:justify-center"
+    class="bg-white flex flex-wrap text-left lg:text-left ml-8 gap-8 justify-center"
   >
     <!--todolist  of todoform  -->
-    <div class="">
+    <div class="max-w-screen-2xlxl max-h-screen">
       <form
         class="bg-gray-50 rounded px-8 pt-6 pb-8 drop-shadow-md h-80"
         @submit.prevent="addDocu()"
@@ -17,7 +17,7 @@
             Email
           </label>
           <input
-            class="outline-none bg-gray-200 py-1 px-2 w-full rounded border-2 border-transparent focus:border-blue-500"
+            class="outline-none bg-gray-200 py-1 px-2 w-60 rounded border-2 border-transparent focus:border-blue-500"
             id="username"
             v-model.lazy="email"
             type="text"
@@ -33,11 +33,11 @@
           </label>
 
           <textarea
-            class="outline-none bg-gray-200 py-1 px-2 w-full rounded border-2 border-transparent focus:border-blue-500 resize-none"
+            class="outline-none bg-gray-200 py-1 px-2 w-6/12 rounded border-2 border-transparent focus:border-blue-500 resize-none"
             name=""
             id=""
             cols="30"
-            rows="3"
+            rows="4"
             v-model.lazy="feedback"
           ></textarea>
         </div>
@@ -47,120 +47,65 @@
             type="submit"
             @click="addDocu()"
           >
-            POST
+         Add
           </button>
         </div>
       </form>
     </div>
     <!--todo end of todo form  -->
 
-    <!--todo details  -->
-    <!--todo start information  -->
-    <!-- <div class="flex flex-auto gap-4 justify-center items-center ml-16"> -->
-    <div class="bg-gray-50 rounded px-8 pt-6 pb-8 drop-shadow-md w-2/3">
-      <h1 class="font-bold text-green-600 text-xl">Information</h1>
-      <br />
-      <hr />
-      <br /><br />
-      <div class=" ">
-      
 
-        <div
-          v-for="info in personalInformation"
-          :key="info"
-          class="shadow-2xl border"
-        >
-          <hr class="gap-4" />
+<!--!? display information  -->
+<div>
+  <div v-for="person in personslInformation" :key="person">
+ <h3> {{ person.email  }}</h3>
 
-          <a class="items-center flex hover:text-gray-200" href="#">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 hover:text-gray-200 m-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </a>
-          <h1 class="text-sm2 text-purple-700 ml-6 font-bold flex">
-            {{ info.email }}
-          </h1>
-          <hr />
-          <p class="text-black text-xs m-8">{{ info.feedback }}</p>
+  <h3>{{ person.personslInformation }}</h3>
 
-          <div class="justify-end items-end gap-x-8 gap-y-4 float-right mr-5">
-            
-            <button
-              class="bg-red-600 p-1 rounded-sm text-white hover:bg-red-900"
-              @click="deleteDocu()"
-            >
-              Delete
-            </button>
-          </div>
-
-          <br /><br /><br />
-    
-        </div>
-      </div>
-    </div>
-    <!--todo end of information  -->
+<div>
+    <button>{{ btnDelete }}</button>
+</div>
   </div>
+</div>
+
+      </div>
+  
+   
+
+   
+  
+    <!--todo end of information  -->
+
 </template>
 
 <script>
 import { ref } from "vue";
 
 export default {
-  setup() {
-    const personalInformation = [
-      {
-        id: 1,
-        email: "yared241993@gmail.com",
-        feedback: "This is called type-based declaration.",
-        Completed: true,
-      },
-      {
-        id: 2,
-        email: "sami241990@gmail.com",
-        feedback: "This is called type-based declaration.",
-        Completed: true,
-      },
-
-      {
-        // id: 3,
-        id: 3,
-        email: "filmonredaei0@gmail.com",
-        feedback: "This is called type-based declaration.",
-        Completed: true,
-      },
-    ];
+props:['personslInformation'],
+  
+setup (props,context) {
+    // context has attrs, slots, and emit()
+    console.log(props.personslInformation) // access a prop to our component
     const email = ref("");
-    const feedback = ref("");
-    const Completed = false;
+  const feedback = ref("");
+  const btnDelete=ref("Delete");
+   
 
     function addDocu() {
-      this.personalInformation.push({
-        email: this.email,
-        feedback: this.feedback,
-        id: this.personalInformation.length + 1,
-        Completed: true,
-      });
+
+      context.emit('addDocu', email.value, feedback.value)
+      email.value = '',
+      feedback.value = '';
+     
+      };
+ 
+    function deleteDocu() {
+   
     }
-    function deleteDocu(email) {
-      // this.information = this.information.filter(
-      //   (info) => info.email !== email
-      // );
-      alert("do u want delete this personal information");
-    }
-    function updateDocu() {}
-    return { personalInformation, deleteDocu, addDocu };
+    return{email,feedback,addDocu,deleteDocu,btnDelete}
   },
+     
 };
 </script>
 
